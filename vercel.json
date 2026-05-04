@@ -1,0 +1,6 @@
+{
+  "installCommand": "npm ci --prefix burgon-dj",
+  "buildCommand": "npm run build --prefix burgon-dj",
+  "outputDirectory": "burgon-dj/dist",
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}
