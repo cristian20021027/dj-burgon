@@ -115,7 +115,7 @@ function App() {
 
       {/* Hero Section con Parallax */}
       <section id="inicio" className="min-h-screen relative flex items-center justify-center overflow-hidden">
-        {/* Imagen de fondo con efecto parallax */}
+        {/* Fondo hero: import para URL correcta en producción (Vite) */}
         <motion.div 
           className="absolute inset-0"
           style={{ 
@@ -123,8 +123,8 @@ function App() {
             y: useTransform(scrollYProgress, [0, 1], [0, 100])
           }}
         >
-          <img 
-            src="/src/assets/1.png" 
+          <img
+            src={galleryImage1}
             alt="DJ Electro"
             className="w-full h-full object-cover"
           />
