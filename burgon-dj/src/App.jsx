@@ -7,6 +7,11 @@ import {
   FaEnvelope, FaClock, FaStar, FaUsers, FaMusic,
   FaImages, FaPaperPlane
 } from 'react-icons/fa';
+import logo from '/src/assets/logo.PNG';
+import galleryImage1 from '/src/assets/1.png';
+import galleryImage2 from '/src/assets/2.png';
+import galleryImage3 from '/src/assets/3.png';
+import galleryImage4 from '/src/assets/4.png';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -35,15 +40,14 @@ function App() {
   };
 
   const galleryImages = [
-    { id: 1, title: "Festival Electro 2025", location: "Bogotá" },
-    { id: 2, title: "Club Night Session", location: "Medellín" },
-    { id: 3, title: "Sunset Beach Party", location: "Santa Marta" },
-    { id: 4, title: "Underground Session", location: "Cali" },
-    { id: 5, title: "Main Stage", location: "Barranquilla" },
-    { id: 6, title: "After Party", location: "Cartagena" },
+    { id: 1, title: "Festival Electro 2025", location: "Bogotá", image: galleryImage1 },
+    { id: 2, title: "Club Night Session", location: "Medellín", image: galleryImage2 },
+    { id: 3, title: "Sunset Beach Party", location: "Santa Marta", image: galleryImage3 },
+    { id: 4, title: "Underground Session", location: "Cali", image: galleryImage4 },
   ];
 
   return (
+    <>
     <div className="bg-black text-white overflow-x-hidden">
       {/* Navbar */}
       <motion.nav 
@@ -53,12 +57,17 @@ function App() {
         className="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-lg border-b border-white/10"
       >
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-          <motion.h1 
+          {/* Logo en la navbar */}
+          <motion.div 
             whileHover={{ scale: 1.05 }}
-            className="text-2xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent"
+            className="flex items-center"
           >
-            DJ BURGON
-          </motion.h1>
+            <img 
+              src={logo} 
+              alt="DJ Burgon Logo"
+              className="w-[74px] h-[67px] object-contain"
+            />
+          </motion.div>
           
           <div className="hidden md:flex gap-8">
             {['Inicio', 'Sobre Mí', 'Galería', 'Reservas'].map((item) => (
@@ -115,7 +124,7 @@ function App() {
           }}
         >
           <img 
-            src="/src/assets/peakpx.jpg" 
+            src="/src/assets/1.png" 
             alt="DJ Electro"
             className="w-full h-full object-cover"
           />
@@ -135,11 +144,21 @@ function App() {
             >
               <FaHeadphones className="text-6xl text-purple-500" />
             </motion.div>
-            <h2 className="text-5xl md:text-7xl font-bold mb-6">
-              <span className="bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 bg-clip-text text-transparent">
-                DJ BURGON
-              </span>
-            </h2>
+            
+            {/* Logo en la sección de inicio */}
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="mb-6 flex justify-center"
+            >
+              <img 
+                src={logo} 
+                alt="DJ Burgon Logo"
+                className="h-24 md:h-32 w-auto object-contain"
+              />
+            </motion.div>
+            
             <p className="text-xl md:text-2xl text-gray-300 mb-6 max-w-2xl mx-auto">
               Transformando momentos en experiencias musicales inolvidables
             </p>
@@ -308,9 +327,11 @@ function App() {
                 whileHover={{ scale: 1.05, y: -5 }}
                 className="group relative overflow-hidden rounded-2xl cursor-pointer"
               >
-                <div className="aspect-[4/3] bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center text-6xl">
-                  🎵
-                </div>
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="aspect-[4/3] w-full object-cover"
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
                   <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
                     <h4 className="text-xl font-bold">{item.title}</h4>
@@ -356,7 +377,7 @@ function App() {
                       </div>
                       <div>
                         <p className="text-sm text-gray-400">WhatsApp</p>
-                        <p className="font-semibold">+57 300 123 4567</p>
+                        <p className="font-semibold">+57 300 533 4609</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-4">
@@ -365,7 +386,7 @@ function App() {
                       </div>
                       <div>
                         <p className="text-sm text-gray-400">Email</p>
-                        <p className="font-semibold">dj.electro@music.com</p>
+                        <p className="font-semibold">burgonjesus1@gmail.com</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-4">
@@ -490,17 +511,21 @@ function App() {
         <div className="container mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="text-center md:text-left">
-              <h4 className="text-2xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent mb-2">
-                DJ BURGON
-              </h4>
+              <div className="flex justify-center md:justify-start mb-2">
+                <img 
+                  src={logo} 
+                  alt="DJ Burgon Logo"
+                  className="h-10 w-auto object-contain"
+                />
+              </div>
               <p className="text-gray-400 text-sm">© 2026 Todos los derechos reservados</p>
             </div>
             
             <div className="flex gap-6">
-              {[FaSpotify, FaApple, FaSoundcloud, FaInstagram, FaFacebook, FaTwitter].map((Icon, index) => (
+              {[FaSoundcloud, FaInstagram, FaFacebook].map((Icon, index) => (
                 <motion.a
                   key={index}
-                  href="#"
+                  href="https://www.instagram.com/djburgon/"
                   whileHover={{ scale: 1.2, y: -3 }}
                   className="text-gray-400 hover:text-purple-500 transition-colors text-2xl"
                 >
@@ -512,6 +537,7 @@ function App() {
         </div>
       </footer>
     </div>
+    </>
   );
 }
 
