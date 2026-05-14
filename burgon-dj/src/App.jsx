@@ -180,8 +180,8 @@ function App() {
   onChange={(e) => setLanguage(e.target.value)}
   className="bg-black border border-white/20 rounded-lg px-3 py-2 text-white"
 >
-  <option value="es">ENGLISH</option>
-  <option value="en">SPANISH</option>
+  <option value="es">SPANISH</option>
+  <option value="en">ENGLISH</option>
   <option value="pt">PORTUGUES</option>
 </select>
 
