@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { translations } from "./translations";
 import { 
   FaPlay, FaUser, FaCalendarAlt, FaTicketAlt, 
   FaSpotify, FaApple, FaSoundcloud, FaInstagram, 
@@ -20,6 +21,8 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [language, setLanguage] = useState("es");
+  const t = translations[language]; 
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -135,65 +138,113 @@ function App() {
         )}
       </AnimatePresence>
 
-      {/* Navbar */}
-      <motion.nav 
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-lg border-b border-white/10"
-      >
-        <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-          {/* Logo en la navbar */}
-          <motion.div 
-            whileHover={{ scale: 1.05 }}
-            className="flex items-center"
-          >
-            <p className="text-2xl font-bold">BURGON DJ</p>
-          </motion.div>
-          
-          <div className="hidden md:flex gap-8">
-            {['Inicio', 'Sobre Mí', 'Galería', 'Reservas'].map((item) => (
-              <motion.a
-                key={item}
-                href={`#${item.toLowerCase().replace(/ /g, '-')}`}
-                whileHover={{ scale: 1.1 }}
-                className="hover:text-purple-400 transition-colors cursor-pointer"
-              >
-                {item}
-              </motion.a>
-            ))}
-          </div>
+     {/* Navbar */}
+<motion.nav 
+  initial={{ y: -100 }}
+  animate={{ y: 0 }}
+  transition={{ duration: 0.5 }}
+  className="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-lg border-b border-white/10"
+>
+  <div className="container mx-auto px-6 py-4 flex justify-between items-center">
 
-          <button 
-            className="md:hidden text-2xl"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
+    {/* Logo */}
+    <motion.div 
+      whileHover={{ scale: 1.05 }}
+      className="flex items-center"
+    >
+      <p className="text-2xl font-bold">BURGON DJ</p>
+    </motion.div>
+
+    {/* Desktop Menu */}
+    <div className="hidden md:flex gap-8 items-center">
+
+      {[
+        { text: t.nav.inicio, href: "inicio" },
+        { text: t.nav.sobreMi, href: "sobre-mí" },
+        { text: t.nav.galeria, href: "galería" },
+        { text: t.nav.reservas, href: "reservas" },
+      ].map((item) => (
+        <motion.a
+          key={item.href}
+          href={`#${item.href}`}
+          whileHover={{ scale: 1.1 }}
+          className="hover:text-purple-400 transition-colors cursor-pointer"
+        >
+          {item.text}
+        </motion.a>
+      ))}
+
+      {/* Selector Idioma */}
+      <select
+  value={language}
+  onChange={(e) => setLanguage(e.target.value)}
+  className="bg-black border border-white/20 rounded-lg px-3 py-2 text-white"
+>
+  <option value="es">ENGLISH</option>
+  <option value="en">SPANISH</option>
+  <option value="pt">PORTUGUES</option>
+</select>
+
+    </div>
+
+    {/* Mobile Button */}
+    <button 
+      className="md:hidden text-2xl"
+      onClick={() => setIsMenuOpen(!isMenuOpen)}
+    >
+      ☰
+    </button>
+
+  </div>
+
+  {/* Mobile Menu */}
+  <AnimatePresence>
+    {isMenuOpen && (
+      <motion.div
+        initial={{ opacity: 0, height: 0 }}
+        animate={{ opacity: 1, height: 'auto' }}
+        exit={{ opacity: 0, height: 0 }}
+        className="md:hidden bg-black/95 backdrop-blur-lg"
+      >
+
+        {[
+          { text: t.nav.inicio, href: "inicio" },
+          { text: t.nav.sobreMi, href: "sobre-mí" },
+          { text: t.nav.galeria, href: "galería" },
+          { text: t.nav.reservas, href: "reservas" },
+        ].map((item) => (
+          <a
+            key={item.href}
+            href={`#${item.href}`}
+            className="block py-3 px-6 hover:bg-white/10"
+            onClick={() => setIsMenuOpen(false)}
           >
-            ☰
+            {item.text}
+          </a>
+        ))}
+
+        {/* Mobile Languages */}
+        <div className="flex gap-3 px-6 py-4 border-t border-white/10">
+
+          <button onClick={() => setLanguage("es")}>
+            🇪🇸
           </button>
+
+          <button onClick={() => setLanguage("en")}>
+            🇺🇸
+          </button>
+
+          <button onClick={() => setLanguage("pt")}>
+            🇧🇷
+          </button>
+
         </div>
 
-        <AnimatePresence>
-          {isMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-black/95 backdrop-blur-lg"
-            >
-              {['Inicio', 'Sobre Mí', 'Galería', 'Reservas'].map((item) => (
-                <a
-                  key={item}
-                  href={`#${item.toLowerCase().replace(/ /g, '-')}`}
-                  className="block py-3 px-6 hover:bg-white/10"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {item}
-                </a>
-              ))}
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.nav>
+      </motion.div>
+    )}
+  </AnimatePresence>
+
+</motion.nav>
 
       {/* Hero Section con Parallax */}
       <section id="inicio" className="min-h-screen relative flex items-center justify-center overflow-hidden">
@@ -239,25 +290,25 @@ function App() {
               </h1>
               <div className="w-44 md:w-56 h-1.5 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 my-4" />
               <h4 className="text-sm md:text-base uppercase tracking-[0.35em] text-gray-200">
-                DJ Y PRODUCTOR
+              {t.hero.subtitle}
               </h4>
             </motion.div>
             
             <p className="text-xl md:text-2xl text-gray-300 mb-6 max-w-2xl mx-auto">
-            Impulsando propuestas musicales sin límites, Burgon convierte cada set en una vivencia cargada de energía, identidad y cercanía con el público. Desde Barranquilla hacia cualquier escenario, su trabajo va más allá de mezclar: construye recuerdos a través del sonido.
+           {t.hero.description}
             </p>
             <div className="flex flex-wrap gap-4 justify-center mb-12">
               <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full">
                 <FaStar className="text-yellow-500" />
-                <span>+50 Eventos Realizados</span>
+                <span>{t.hero.events}</span>
               </div>
               <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full">
                 <FaUsers className="text-purple-500" />
-                <span>+10K Personas</span>
+                <span>{t.hero.people}</span>
               </div>
               <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full">
                 <FaHeadphones className="text-pink-500" />
-                <span>15 Años de Experiencia</span>
+                <span>{t.hero.years}</span>
               </div>
             </div>
             <motion.a
@@ -266,7 +317,7 @@ function App() {
               whileTap={{ scale: 0.95 }}
               className="bg-gradient-to-r from-purple-600 to-pink-600 px-8 py-4 rounded-full text-lg font-semibold inline-flex items-center gap-2 hover:shadow-lg hover:shadow-purple-500/50 transition-all"
             >
-              <FaCalendarAlt /> RESERVA AHORA
+              <FaCalendarAlt /> {t.hero.button}
             </motion.a>
           </motion.div>
         </div>
@@ -309,7 +360,7 @@ function App() {
             className="text-center mb-16"
           >
             <FaUser className="text-4xl text-purple-500 mx-auto mb-4" />
-            <h3 className="text-4xl md:text-5xl font-bold mb-4">ACERCA DE MI</h3>
+            <h3 className="text-4xl md:text-5xl font-bold mb-4">{t.about.title}</h3>
             <div className="w-24 h-1 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto"></div>
           </motion.div>
 
@@ -325,11 +376,9 @@ function App() {
                   <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl blur-xl opacity-35"></div>
                   <div className="relative rounded-2xl border border-white/15 bg-black/25 p-8 shadow-lg shadow-black/25 backdrop-blur-md supports-[backdrop-filter]:bg-black/20">
                     <FaMusic className="text-5xl text-purple-500 mb-4 drop-shadow-sm" />
-                    <h4 className="mb-4 text-2xl font-bold drop-shadow-md">Mi Historia</h4>
+                    <h4 className="mb-4 text-2xl font-bold drop-shadow-md">{t.about.history}</h4>
                     <p className="leading-relaxed text-gray-100/95 drop-shadow-sm">
-                    Soy Burgon, DJ de Barranquilla con más de 15 años de experiencia en tarimas, eventos y emisoras nacionales. Mi estilo crossover fusiona house y techno con afro y reggaetón, creando una identidad sonora de beats profundos, atmósferas envolventes y esencia latina.
-
-Mis sets son recorridos dinámicos donde los géneros se mezclan sin límites, conecto con el público y transformo cada presentación en una experiencia intensa y memorable.
+                   {t.about.description}
                     </p>
                   </div>
                 </div>
@@ -338,12 +387,12 @@ Mis sets son recorridos dinámicos donde los géneros se mezclan sin límites, c
                   <div className="rounded-xl border border-white/12 bg-black/20 p-4 text-center shadow-md shadow-black/15 backdrop-blur-sm supports-[backdrop-filter]:bg-black/15">
                     <FaMusic className="mx-auto mb-2 text-3xl text-purple-500 drop-shadow-sm" />
                     <div className="text-2xl font-bold drop-shadow-sm">15+</div>
-                    <div className="text-sm text-gray-300">Años de Experiencia</div>
+                    <div className="text-sm text-gray-300">{t.about.years}</div>
                   </div>
                   <div className="rounded-xl border border-white/12 bg-black/20 p-4 text-center shadow-md shadow-black/15 backdrop-blur-sm supports-[backdrop-filter]:bg-black/15">
                     <FaUsers className="mx-auto mb-2 text-3xl text-pink-500 drop-shadow-sm" />
                     <div className="text-2xl font-bold drop-shadow-sm">50+</div>
-                    <div className="text-sm text-gray-300">Eventos Realizados</div>
+                    <div className="text-sm text-gray-300">{t.about.events}</div>
                   </div>
                 </div>
               </motion.div>
@@ -357,7 +406,7 @@ Mis sets son recorridos dinámicos donde los géneros se mezclan sin límites, c
                 <div className="grid md:grid-cols-2 gap-4">
                   {[
                     {
-                      title: "REAL NAME",
+                      title: t.about.name_real,
                       value: "Jesus Burgon",
                       extra: "DJ since 1993"
                     },
@@ -417,8 +466,8 @@ Mis sets son recorridos dinámicos donde los géneros se mezclan sin límites, c
             className="text-center mb-16"
           >
             <FaImages className="text-4xl text-purple-500 mx-auto mb-4" />
-            <h3 className="text-4xl md:text-5xl font-bold mb-4">Galería de Eventos</h3>
-            <p className="text-gray-400 text-lg">Momentos inolvidables de mis presentaciones</p>
+            <h3 className="text-4xl md:text-5xl font-bold mb-4">{t.gallery.title}</h3>
+            <p className="text-gray-400 text-lg">{t.gallery.subtitle}</p>
             <div className="w-24 h-1 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto mt-4"></div>
           </motion.div>
 
@@ -458,9 +507,9 @@ Mis sets son recorridos dinámicos donde los géneros se mezclan sin límites, c
             className="text-center mb-16"
           >
             <FaTicketAlt className="text-4xl text-purple-500 mx-auto mb-4" />
-            <h3 className="text-4xl md:text-5xl font-bold mb-4">Reserva tu Evento</h3>
+            <h3 className="text-4xl md:text-5xl font-bold mb-4">{t.booking.title}</h3>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-              ¿Listo para llevar la mejor música a tu evento? Completa el formulario y te contactaré para crear una experiencia única
+             {t.booking.subtitle}
             </p>
             <div className="w-24 h-1 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto mt-4"></div>
           </motion.div>
